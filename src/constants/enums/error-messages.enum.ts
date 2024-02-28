@@ -7,7 +7,7 @@ export enum ErrorMessages {
     DuplicateEntryFail = 'User already exists!',
     PasswordMismatchFail = 'Passwords must match!',
     Generic = 'Something went wrong!',
-      NotFound = 'Unable to find the requested resource!',
+    NotFound = 'Unable to find the requested resource!',
     UncaughtException = 'Uncaught Exception thrown!',
     UnhandledRejection = 'Unhandled Exception thrown!'
   }

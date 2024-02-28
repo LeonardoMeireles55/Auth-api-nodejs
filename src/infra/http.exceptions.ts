@@ -1,4 +1,4 @@
-import { HTTPStatusCode } from '../enums/http-status-code.enum';
+import { HTTPStatusCode } from '../constants/enums/http-status-code.enum';
 import { HTTPMessages } from '../constants/http-messages';
 import createHttpError = require('http-errors');
 

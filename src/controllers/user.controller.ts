@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
 import userDTO from "../dto/user.dto";
-import  { HTTPStatusCode }  from "../enums/http-status-code.enum";
-import  { ErrorMessages }  from "../enums/error-messages.enum";
+import  { HTTPStatusCode }  from "../constants/enums/http-status-code.enum";
+import  { ErrorMessages }  from "../constants/enums/error-messages.enum";
+import  { HTTPMessages }  from "../constants/http-messages";
 
 export class UserController {
   private userService: UserService;
@@ -15,7 +16,7 @@ export class UserController {
     try {
       const request = req.body as userDTO;
       if(this.userService.existsUserByEmail(request.email)) {
-        return res.status(HTTPStatusCode.Conflict).json(ErrorMessages.DuplicateEntryFail).send();
+        return res.status(HTTPStatusCode.Conflict).json(HTTPMessages.CONFLICT + ErrorMessages.DuplicateEntryFail).send();
       }
       await this.userService.createUser(request)
       return res.status(201).json({ message: "User created successfully" }).send();
