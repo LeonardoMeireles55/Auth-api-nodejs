@@ -1,0 +1,52 @@
+import { Request, Response } from "express";
+import { AuthService } from "../services/auth.service";
+import loginDTO from "../dto/login.dto";
+
+export class AuthController {
+  private authService: AuthService;
+
+  constructor() {
+    this.authService = new AuthService();
+  }
+
+  async login(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body as loginDTO;
+
+      if (!email || !password) {
+        return res.status(400).json({ message: "Email and password required" });
+      }
+
+      const token = await this.authService.login(email, password);
+
+      if (!token) {
+        return res.status(404).json({ message: "Invalid credentials" });
+      }
+
+      return res.status(200).json({ token });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  async getProfile(req: Request, res: Response) {
+    try {
+      if (!req["currentUser"]) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const userId = req["currentUser"].id;
+      const user = await this.authService.getProfile(userId);
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      return res.status(200).json(user);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+}
