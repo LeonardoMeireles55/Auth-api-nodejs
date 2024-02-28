@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/auth.service";
 import loginDTO from "../dto/login.dto";
+import { plainToClass } from "class-transformer";
 
 export class AuthController {
+
   private authService: AuthService;
 
   constructor() {
@@ -11,13 +13,10 @@ export class AuthController {
 
   async login(req: Request, res: Response) {
     try {
-      const { email, password } = req.body as loginDTO;
 
-      if (!email || !password) {
-        return res.status(400).json({ message: "Email and password required" });
-      }
+      const requestDTO = plainToClass(loginDTO, req.body);
 
-      const token = await this.authService.login(email, password);
+      const token = await this.authService.login(requestDTO.email, requestDTO.password);
 
       if (!token) {
         return res.status(404).json({ message: "Invalid credentials" });

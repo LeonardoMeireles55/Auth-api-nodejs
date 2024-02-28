@@ -3,7 +3,6 @@ import { authentification } from "../infra/middleware/auth.middleware";
 import { UserController } from "../controllers/user.controller";
 import { authorization } from "../infra/middleware/auth.middleware";
 import { AuthController } from "../controllers/auth.controller";
-import UserDTO from "../dto/user.dto";
 const Router = express.Router();
 
 const userController = new UserController();
