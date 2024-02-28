@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEmail, IsBoolean, Matches } from "class-validator";
+import { IsNotEmpty, Matches, IsEmail } from "class-validator";
 
 export default class UserDTO {
   id: string;
@@ -15,7 +15,7 @@ export default class UserDTO {
   @Matches(/^\d{4}-\d{2}-\d{2}$/)
   dateBirth: Date;
 
-  @Matches(/^\d{5}-\d{2}$/)
+  @Matches(/^\d{5}-\d{3}$/)
   postalCode: string;
   
   @IsNotEmpty()
@@ -27,14 +27,12 @@ export default class UserDTO {
   @IsNotEmpty()
   street: string;
 
-  @IsNotEmpty()
   @IsEmail()
   email: string;
 
   password?: string;
 
-  @IsBoolean()
-  enabled: boolean;
+  enabled?: boolean;
 
   createdAt?: Date;
 

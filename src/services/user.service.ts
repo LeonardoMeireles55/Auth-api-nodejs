@@ -56,20 +56,7 @@ export class UserService {
 
         const encryptedPassword = await encrypt.encryptpass(password);
 
-        const user = new User();
-        user.username = username;
-        user.firstname = firstname;
-        user.lastname = lastname;
-        user.dateBirth = dateBirth;
-        user.postalCode = postalCode;
-        user.state = state;
-        user.city = city;
-        user.street = street;
-        user.email = email;
-        user.password = encryptedPassword;
-        user.enabled = true;
-
-            return await this.userRepository.save(user);
+            return await this.userRepository.save(userDTO);
     }
 
     async getUsersFromCacheOrDb(): Promise<userDTO[]> {

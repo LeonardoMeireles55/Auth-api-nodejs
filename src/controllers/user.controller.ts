@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
-import userDTO from "../dto/user.dto";
 import { HTTPStatusCode } from "../constants/enums/http-status-code.enum";
 import { ErrorMessages } from "../constants/enums/error-messages.enum";
 import { HTTPMessages } from "../constants/http-messages.constants";
+import { validate } from "class-validator";
+import UserDTO from "../dto/user.dto";
+import { plainToClass } from "class-transformer";
 
 export class UserController {
   private userService: UserService;
@@ -14,17 +16,24 @@ export class UserController {
 
   async signup(req: Request, res: Response) {
     try {
-      const request = req.body as userDTO;
+
+      const userDTO = plainToClass(UserDTO, req.body);
+      const errors = await validate(userDTO);
+
+      if(errors.length > 0) {
+        return res.status(HTTPStatusCode.BadRequest).json(errors.map((error => error.property + " is invalid"))).send();
+      }
       
-      if (await this.userService.existsUserByEmail(request.email)) {
+      
+      if (await this.userService.existsUserByEmail(userDTO.email)) {
         return res.status(HTTPStatusCode.Conflict).json(HTTPMessages.CONFLICT + ErrorMessages.DuplicateEntryFail).send();
       }
 
-      await this.userService.createUser(request)
+      await this.userService.createUser(userDTO);
       return res.status(201).json({ message: "User created successfully" }).send();
 
     } catch (error) {
-      return res.status(500).json( error.message );
+      return res.status(500).json( error.message ).send();
     }
   }
 
