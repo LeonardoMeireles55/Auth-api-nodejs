@@ -1,7 +1,7 @@
 import { Repository } from "typeorm";
-import { AppDataSource } from "../data-source";
+import { AppDataSource } from "../infra/config/database/data-source";
 import { User } from "../entity/User.entity";
-import { encrypt } from "../helpers/helpers";
+import { encrypt } from "../infra/config/security/security.config";
 
 export class AuthService {
 
@@ -12,17 +12,8 @@ export class AuthService {
     }
 
   async login(email: string, password: string): Promise<string | null> {
-    try {
-      if (!email || !password) {
-        return null;
-    }
-
       const user = await this.userRepository.findOne({ where: { email } });
-
-      if (!user) {
-        return null;
-    }
-
+      
       const isPasswordValid = encrypt.comparepassword(user.password, password);
 
       if (!isPasswordValid) {
@@ -31,22 +22,14 @@ export class AuthService {
 
       const token = encrypt.generateToken({ id: user.id });
       return token;
-    } catch (error) {
-      console.error(error);
-      throw new Error("Internal server error");
-    }
+
   }
 
   async getProfile(userId: string): Promise<User | null> {
-    try {
       const user = await this.userRepository.findOne({
         where: { id: userId },
       });
 
       return user;
-    } catch (error) {
-      console.error(error);
-      throw new Error("Internal server error");
-    }
   }
 }

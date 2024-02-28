@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { DataSource, Tree } from "typeorm";
 
 import * as dotenv from "dotenv";
-import { User } from "./entity/User.entity";
+import { User } from "../../../entity/User.entity";
 
 dotenv.config();
 
@@ -20,6 +20,6 @@ export const AppDataSource = new DataSource({
   synchronize: NODE_ENV === "dev" ? true : false,
   logging: NODE_ENV === "dev" ? true : false,
   entities: [User],
-  migrations: ["./migrations/*{.ts,.js}"],
+  migrations: ["../migrations/*{.ts,.js}"],
   subscribers: [],
 });

@@ -24,8 +24,8 @@ export const authentification = (
   next();
 };
 
-import { AppDataSource } from "../data-source";
-import { User } from "../entity/User.entity";
+import { AppDataSource } from "../config/database/data-source";
+import { User } from "../../entity/User.entity";
 
 
 export const authorization = (roles: string[]) => {

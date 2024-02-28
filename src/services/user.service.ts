@@ -1,6 +1,6 @@
 import { User } from "../entity/User.entity";
-import { encrypt } from "../helpers/helpers";
-import { AppDataSource } from "../data-source";
+import { encrypt } from "../infra/config/security/security.config";
+import { AppDataSource } from "../infra/config/database/data-source";
 import { Repository } from "typeorm";
 import * as cache from "memory-cache";
 import userDTO from "../dto/user.dto";
@@ -99,7 +99,6 @@ export class UserService {
 
     async deleteUserById(id: string): Promise<void> {
         const user = await this.getUserById(id);
-
         await this.userRepository.remove(user);
     }
 

@@ -1,5 +1,5 @@
-import { HTTPStatusCode } from '../constants/enums/http-status-code.enum';
-import { HTTPMessages } from '../constants/http-messages';
+import { HTTPStatusCode } from '../../constants/enums/http-status-code.enum';
+import { HTTPMessages } from '../../constants/http-messages.constants';
 import createHttpError = require('http-errors');
 
 export class BadRequestException {
@@ -16,7 +16,7 @@ export class UnauthorizedException {
 
 export class NotFoundException {
   constructor(message = HTTPMessages.NOT_FOUND) {
-    throw createHttpError(HTTPStatusCode.NotFound, message);
+    throw  createHttpError(HTTPStatusCode.NotFound, message);
   }
 }
 

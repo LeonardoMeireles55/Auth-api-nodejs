@@ -1,10 +1,10 @@
-import { AppDataSource } from "./data-source";
+import { AppDataSource } from "./infra/config/database/data-source";
 import * as express from "express";
 import * as dotenv from "dotenv";
 import { Request, Response } from "express";
 import { userRouter } from "./routes/user.routes";
 import "reflect-metadata";
-import { exceptionHandler } from "./middleware/error.middleware";
+import { exceptionHandler } from "./infra/middleware/error.middleware";
 dotenv.config();
 
 const app = express();

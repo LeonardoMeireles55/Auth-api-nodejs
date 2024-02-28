@@ -22,11 +22,11 @@ export class AuthController {
       if (!token) {
         return res.status(404).json({ message: "Invalid credentials" });
       }
-
+      
       return res.status(200).json({ token });
+
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json( error.message );
     }
   }
 
@@ -44,9 +44,9 @@ export class AuthController {
       }
 
       return res.status(200).json(user);
+      
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json( error.message );
     }
   }
 }
