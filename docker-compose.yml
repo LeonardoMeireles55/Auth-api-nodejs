@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  db:
+    image: mariadb:10.10
+    restart: always
+    env_file: ./.env
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 3307:3306
+    volumes:
+      - mariadb_data:/var/lib/mysql
+  nodeapp:
+    container_name: node-api-typeorm
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: api-typeorm
+    env_file: ./.env
+    environment:
+      - DB_DATABASE=${DB_DATABASE}
+      - PORT=${DB_PORT}
+      - DB_HOST=db
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - db
+volumes:
+  mariadb_data: {}
+

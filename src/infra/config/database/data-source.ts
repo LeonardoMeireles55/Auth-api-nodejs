@@ -12,7 +12,7 @@ const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, NODE_ENV } =
 export const AppDataSource = new DataSource({
   type: "mariadb",
   host: DB_HOST,
-  port: parseInt(DB_PORT || "3306"),
+  port: parseInt(DB_PORT || "3306" || "3307"),
   username: DB_USERNAME || "root",
   password: DB_PASSWORD || "root",
   database: DB_DATABASE || "user_node",
