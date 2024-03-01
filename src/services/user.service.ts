@@ -4,10 +4,12 @@ import * as cache from "memory-cache";
 import userDTO from "../dto/user.dto";
 import { plainToClass } from "class-transformer";
 import UserDTO from "../dto/user.dto";
+import { Repository } from "typeorm";
 
 export class UserService {
 
-    constructor(private userRepository: IUserRepository) {
+    constructor(private userRepository: Repository<User>) {
+        this.userRepository = userRepository;
     }
 
     mapUserToDTO(user: User): userDTO {
@@ -23,7 +25,7 @@ export class UserService {
         return await this.userRepository.exists({ where: { id } })
     }
 
-    async createUser(userDTO: userDTO): Promise<User> {
+    async createUser(userDTO: userDTO): Promise<UserDTO> {
 
         const encryptedPassword = await encrypt.encryptpass(userDTO.password);
         userDTO.password = encryptedPassword;

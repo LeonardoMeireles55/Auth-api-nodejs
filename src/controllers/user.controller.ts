@@ -6,12 +6,13 @@ import { HTTPMessages } from "../constants/http-messages.constants";
 import { validate } from "class-validator";
 import UserDTO from "../dto/user.dto";
 import { plainToClass } from "class-transformer";
+import { UserRepository } from "../repositories/user.repository";
 
 export class UserController {
   private userService: UserService;
 
-  constructor() {
-    this.userService = new UserService();
+  constructor(userRepository: UserRepository) {
+    this.userService = new UserService(userRepository.getUserRepository());
   }
 
   async signup(req: Request, res: Response) {

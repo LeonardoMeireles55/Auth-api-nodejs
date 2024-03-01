@@ -1,8 +1,9 @@
 import { Repository } from "typeorm";
 import { User } from "../entity/User.entity";
 import { AppDataSource } from "../infra/config/database/data-source";
+import UserDTO from "../dto/user.dto";
 
-export class UserRepository implements IUserRepository {
+export class UserRepository {
     
     private userRepository: Repository<User>;
 
@@ -22,7 +23,7 @@ export class UserRepository implements IUserRepository {
         return this.userRepository.exists(where);
     }
 
-    save(user: User): Promise<User> {
+    save(user: UserDTO): Promise<User> {
         return this.userRepository.save(user);
     }
 

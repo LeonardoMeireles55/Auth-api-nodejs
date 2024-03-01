@@ -2,13 +2,14 @@ import { Request, Response } from "express";
 import { AuthService } from "../services/auth.service";
 import loginDTO from "../dto/login.dto";
 import { plainToClass } from "class-transformer";
+import { UserRepository } from "../repositories/user.repository";
 
 export class AuthController {
 
   private authService: AuthService;
 
-  constructor() {
-    this.authService = new AuthService();
+  constructor(userRepository: UserRepository) {
+    this.authService = new AuthService(userRepository.getUserRepository());
   }
 
   async login(req: Request, res: Response) {

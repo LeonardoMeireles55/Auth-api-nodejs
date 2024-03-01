@@ -3,10 +3,11 @@ import { authentification } from "../infra/middleware/auth.middleware";
 import { UserController } from "../controllers/user.controller";
 import { authorization } from "../infra/middleware/auth.middleware";
 import { AuthController } from "../controllers/auth.controller";
+import { UserRepository } from "../repositories/user.repository";
 const Router = express.Router();
-
-const userController = new UserController();
-const authController = new AuthController();
+const userRepository = new UserRepository();
+const userController = new UserController(userRepository);
+const authController = new AuthController(userRepository);
 
 Router.get(
   "/users",

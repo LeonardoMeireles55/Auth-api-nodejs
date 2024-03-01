@@ -1,9 +1,11 @@
+import { Repository } from "typeorm";
 import { User } from "../entity/User.entity";
 import { encrypt } from "../infra/config/security/security.config";
 
 export class AuthService {
 
-    constructor(private userRepository: IUserRepository) {
+    constructor(private userRepository: Repository<User>) {
+        this.userRepository = userRepository;
     }
 
   async login(email: string, password: string): Promise<string | null> {
