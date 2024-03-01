@@ -1,14 +1,9 @@
-import { Repository } from "typeorm";
-import { AppDataSource } from "../infra/config/database/data-source";
 import { User } from "../entity/User.entity";
 import { encrypt } from "../infra/config/security/security.config";
 
 export class AuthService {
 
-    private userRepository: Repository<User>;
-
-    constructor() {
-        this.userRepository = AppDataSource.getRepository(User);
+    constructor(private userRepository: IUserRepository) {
     }
 
   async login(email: string, password: string): Promise<string | null> {

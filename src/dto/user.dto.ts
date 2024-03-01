@@ -1,7 +1,7 @@
 import { IsNotEmpty, Matches, IsEmail } from "class-validator";
 
 export default class UserDTO {
-  id: string;
+  id?: string;
 
   @IsNotEmpty()
   username: string;

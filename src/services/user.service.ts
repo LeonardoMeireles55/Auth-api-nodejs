@@ -1,35 +1,18 @@
 import { User } from "../entity/User.entity";
 import { encrypt } from "../infra/config/security/security.config";
-import { AppDataSource } from "../infra/config/database/data-source";
-import { Repository } from "typeorm";
 import * as cache from "memory-cache";
 import userDTO from "../dto/user.dto";
+import { plainToClass } from "class-transformer";
+import UserDTO from "../dto/user.dto";
 
 export class UserService {
 
-    private userRepository: Repository<User>;
-
-
-    constructor() {
-        this.userRepository = AppDataSource.getRepository(User);
+    constructor(private userRepository: IUserRepository) {
     }
 
     mapUserToDTO(user: User): userDTO {
-        const dto = new userDTO();
-        dto.id = user.id;
-        dto.username = user.username;
-        dto.firstname = user.firstname;
-        dto.lastname = user.lastname;
-        dto.dateBirth = user.dateBirth;
-        dto.postalCode = user.postalCode;
-        dto.state = user.state;
-        dto.city = user.city;
-        dto.street = user.street;
-        dto.email = user.email;
-        dto.enabled = user.enabled;
-        dto.createdAt = user.createdAt;
-        dto.updatedAt = user.updatedAt;
-        return dto;
+        const userDTO = plainToClass(UserDTO, user);
+        return userDTO;
     }
 
     async existsUserByEmail(email: string): Promise<boolean> {
@@ -41,22 +24,11 @@ export class UserService {
     }
 
     async createUser(userDTO: userDTO): Promise<User> {
-        const {
-            username,
-            firstname,
-            lastname,
-            dateBirth,
-            postalCode,
-            state,
-            city,
-            street,
-            email,
-            password,
-        } = userDTO;
 
-        const encryptedPassword = await encrypt.encryptpass(password);
+        const encryptedPassword = await encrypt.encryptpass(userDTO.password);
+        userDTO.password = encryptedPassword;
 
-            return await this.userRepository.save(userDTO);
+        return await this.userRepository.save(userDTO);
     }
 
     async getUsersFromCacheOrDb(): Promise<userDTO[]> {
