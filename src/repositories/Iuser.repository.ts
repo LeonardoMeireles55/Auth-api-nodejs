@@ -1,4 +1,4 @@
-interface IUserRepository {
+export interface IUserRepository {
     exists(where: any): Promise<boolean>
     save(user: any): Promise<any>
     find(): Promise<any[]>
