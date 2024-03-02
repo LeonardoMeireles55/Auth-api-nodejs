@@ -25,6 +25,8 @@ Router.get(
 );
 Router.post('/signup', (req, res) => userController.signup(req, res));
 Router.post("/login", (req, res) => authController.login(req, res));
+Router.post("/forgotPassword", (req, res) => userController.generateRecoveryToken(req, res));
+Router.post("/updatePassword", (req, res) => userController.updatePassword(req, res));
 
 Router.post('/sendEmail',
   authentification,

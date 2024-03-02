@@ -16,6 +16,30 @@ export class UserController {
     this.userService = new UserService(userRepository.getUserRepository());
   }
 
+  async generateRecoveryToken(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+
+      const message = await this.userService.generateRecoveryToken(email);
+      return res.status(200).json({ message }).send();
+
+    } catch (error) {
+      return res.status(500).json( error.message );
+    }
+  }
+
+  async updatePassword(req: Request, res: Response) {
+    try {
+      const { email, password, token } = req.body;
+
+      await this.userService.updatePassword (email, password, token);
+      return res.status(200).json({ message: "Password updated successfully" }).send();
+
+    } catch (error) {
+      return res.status(500).json( error.message );
+    }
+  }
+
   async sendEmail(req: Request, res: Response) {
     try {
       const emailToSend = plainToClass(emailDTO, req.body);

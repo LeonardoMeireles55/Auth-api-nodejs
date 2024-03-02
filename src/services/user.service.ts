@@ -6,13 +6,50 @@ import { plainToClass } from "class-transformer";
 import UserDTO from "../dto/user.dto";
 import { Repository } from "typeorm";
 import { EmailService } from "./email.service";
+import { UUID } from "typeorm/driver/mongodb/bson.typings";
 
 export class UserService {
 
     private EmailService = new EmailService();
 
+    private TokenHashMap = new Map();
+
     constructor(private userRepository: Repository<User>) {
         this.userRepository = userRepository;
+    }
+
+    async generateRecoveryToken(email: string): Promise<string> {
+        const user = await this.userRepository.findOne({ where: { email } });
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+        this.TokenHashMap.set(user.id, token);
+
+        await this.sendEmail(user.email, "Password Recovery", `Your recovery token is: ${token}`);
+
+        return "Verify your email to recover your password.";
+    }
+
+    async updatePassword(email: string, password: string, token: string): Promise<void> {
+        const user = await this.userRepository.findOne({ where: { email } });
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        if (this.TokenHashMap.get(user.id) !== token) {
+            throw new Error("Invalid token");
+        }
+
+        const encryptedPassword = await encrypt.encryptpass(password);
+
+        user.password = encryptedPassword;
+
+        await this.userRepository.save(user);
     }
 
     async sendEmail(to: string, subject: string, body: string) {
