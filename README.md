@@ -20,8 +20,8 @@ DB_PASSWORD=root
 DB_DATABASE=user_node  
 
 ### Email Configuration
-EMAIL_USER=
-EMAIL_PASS=
+EMAIL_USER=  
+EMAIL_PASS=  
 
 ### Node Environment
 NODE_ENV=dev
