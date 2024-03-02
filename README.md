@@ -38,3 +38,7 @@ Run the following command to start the project:
 ```bash
 yarn start
 ```
+# Start the Project with DOCKER
+```bash
+docker compose up
+```
