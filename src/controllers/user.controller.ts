@@ -7,12 +7,25 @@ import { validate } from "class-validator";
 import UserDTO from "../dto/user.dto";
 import { plainToClass } from "class-transformer";
 import { UserRepository } from "../repositories/user.repository";
+import emailDTO from "../dto/email.dto";
 
 export class UserController {
   private userService: UserService;
 
   constructor(userRepository: UserRepository) {
     this.userService = new UserService(userRepository.getUserRepository());
+  }
+
+  async sendEmail(req: Request, res: Response) {
+    try {
+      const emailToSend = plainToClass(emailDTO, req.body);
+
+      await this.userService.sendEmail(emailToSend.to, emailToSend.subject, emailToSend.body)
+      return res.status(200).json().send()
+    }
+    catch {
+      return res.status(500).json().send()
+    }
   }
 
   async signup(req: Request, res: Response) {

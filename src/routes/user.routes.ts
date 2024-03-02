@@ -23,6 +23,7 @@ Router.get(
 );
 Router.post('/signup', (req, res) => userController.signup(req, res));
 Router.post("/login", (req, res) => authController.login(req, res));
+Router.post('/sendEmail', (req, res) => userController.sendEmail(req, res));
 
 Router.put(
   "/update/:id",
