@@ -5,11 +5,18 @@ import userDTO from "../dto/user.dto";
 import { plainToClass } from "class-transformer";
 import UserDTO from "../dto/user.dto";
 import { Repository } from "typeorm";
+import { EmailService } from "./email.service";
 
 export class UserService {
 
+    private EmailService = new EmailService();
+
     constructor(private userRepository: Repository<User>) {
         this.userRepository = userRepository;
+    }
+
+    async sendEmail(to: string, subject: string, body: string) {
+        await this.EmailService.sendEmail(to, subject, body);
     }
 
     mapUserToDTO(user: User): userDTO {
