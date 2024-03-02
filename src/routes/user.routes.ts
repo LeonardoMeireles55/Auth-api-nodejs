@@ -5,7 +5,9 @@ import { authorization } from "../infra/middleware/auth.middleware";
 import { AuthController } from "../controllers/auth.controller";
 import { UserRepository } from "../repositories/user.repository";
 const Router = express.Router();
+
 const userRepository = new UserRepository();
+
 const userController = new UserController(userRepository);
 const authController = new AuthController(userRepository);
 
@@ -23,7 +25,11 @@ Router.get(
 );
 Router.post('/signup', (req, res) => userController.signup(req, res));
 Router.post("/login", (req, res) => authController.login(req, res));
-Router.post('/sendEmail', (req, res) => userController.sendEmail(req, res));
+
+Router.post('/sendEmail',
+  authentification,
+  authorization(["admin"]),
+  (req, res) => userController.sendEmail(req, res));
 
 Router.put(
   "/update/:id",
