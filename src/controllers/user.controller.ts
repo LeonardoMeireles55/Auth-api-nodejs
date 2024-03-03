@@ -43,6 +43,11 @@ export class UserController {
   async sendEmail(req: Request, res: Response) {
     try {
       const emailToSend = plainToClass(createEmailDTO, req.body);
+      const errors = await validate(emailToSend);
+
+      if(errors.length > 0) {
+        return res.status(HTTPStatusCode.BadRequest).json(errors.map((error => error.property + ": is invalid"))).send();
+      }
 
       await this.userService.sendEmail(emailToSend.to, emailToSend.subject, emailToSend.body)
       return res.status(200).json().send()

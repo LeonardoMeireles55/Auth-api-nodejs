@@ -1,5 +1,10 @@
+import { IsNotEmpty } from "class-validator";
+
 export default class createEmailDTO {
-    to : string;
+    @IsNotEmpty()
+    to: string;
+    @IsNotEmpty()
     subject: string;
-    body : string;
+    @IsNotEmpty()
+    body: string;
 }
