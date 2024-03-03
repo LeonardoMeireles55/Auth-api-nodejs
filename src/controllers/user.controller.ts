@@ -8,12 +8,17 @@ import UserDTO from "../dto/user.dto";
 import { plainToClass } from "class-transformer";
 import { UserRepository } from "../repositories/user.repository";
 import createEmailDTO from "../dto/email.dto";
+import { EmailSender } from "../utils/email.util";
+import tokenCache from "../utils/tokenCache.utils";
 
 export class UserController {
   private userService: UserService;
+  private emailSender: EmailSender;
+  private tokenCache = tokenCache();
 
   constructor(userRepository: UserRepository) {
-    this.userService = new UserService(userRepository.getUserRepository());
+    this.userService = new UserService(userRepository.getUserRepository(),
+     this.emailSender = new EmailSender(), this.tokenCache);
   }
 
   async generateRecoveryToken(req: Request, res: Response) {

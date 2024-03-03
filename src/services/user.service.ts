@@ -4,17 +4,16 @@ import * as cache from "memory-cache";
 import { plainToClass } from "class-transformer";
 import UserDTO from "../dto/user.dto";
 import { Repository } from "typeorm";
-import { EmailService } from "./email.service";
-import tokenCache from "../utils/tokenCache.utils";
 
 export class UserService {
 
-    private EmailService = new EmailService();
-
-    private tokenCache = tokenCache();
-
-    constructor(private userRepository: Repository<User>) {
+    constructor(private userRepository: Repository<any>,
+        private emailSender: any,
+        private tokenCache: any) 
+    {
         this.userRepository = userRepository;
+        this.emailSender = emailSender;
+        this.tokenCache = tokenCache;
     }
 
     async generateRecoveryToken(email: string): Promise<string> {
@@ -53,7 +52,7 @@ export class UserService {
     }
 
     async sendEmail(to: string, subject: string, body: string) {
-        await this.EmailService.sendEmail(to, subject, body);
+        await this.emailSender.sendEmail(to, subject, body);
     }
 
     mapUserToDTO(user: User): UserDTO {
