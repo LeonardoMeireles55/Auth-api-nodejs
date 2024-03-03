@@ -13,11 +13,11 @@ yarn install
 Create a .env file in the project root directory with the following template:
 
 ### Database Configuration
-DB_HOST=localhost  
-DB_PORT=3306  
-DB_USERNAME=root  
-DB_PASSWORD=root  
-DB_DATABASE=user_node  
+DB_HOST=  
+DB_PORT=  
+DB_USERNAME=
+DB_PASSWORD=
+DB_DATABASE=
 
 ### Email Configuration
 EMAIL_USER=  
