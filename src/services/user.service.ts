@@ -5,12 +5,13 @@ import { plainToClass } from "class-transformer";
 import UserDTO from "../dto/user.dto";
 import { Repository } from "typeorm";
 import { EmailService } from "./email.service";
+import tokenCache from "../utils/tokenCache.utils";
 
 export class UserService {
 
     private EmailService = new EmailService();
 
-    private TokenHashMap = new Map();
+    private tokenCache = tokenCache();
 
     constructor(private userRepository: Repository<User>) {
         this.userRepository = userRepository;
@@ -22,11 +23,11 @@ export class UserService {
         if (!user) {
             throw new Error("User not found");
         }
-        
-        const token = Math.random().toString(36).substring(2, 15) +
-        Math.random().toString(36).substring(2, 15);
 
-        this.TokenHashMap.set(user.id, token);
+        const token = Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15);
+
+        this.tokenCache.set(user.id, token);
 
         await this.sendEmail(user.email, "Password Recovery", `Your recovery token is: ${token}`);
 
@@ -40,7 +41,7 @@ export class UserService {
             throw new Error("User not found");
         }
 
-        if (this.TokenHashMap.get(user.id) !== token) {
+        if (this.tokenCache.get(user.id) !== token) {
             throw new Error("Invalid token");
         }
 
