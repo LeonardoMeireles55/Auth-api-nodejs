@@ -1,6 +1,9 @@
 import { Repository } from "typeorm";
 import { User } from "../entity/User.entity";
-import { encrypt } from "../infra/config/security/security.config";
+import { encrypt } from "../infra/config/security.config";
+import { HTTPStatusCode } from "../constants/enums/http-status-code.enum";
+import { response } from "express";
+import { HTTPMessages } from "../constants/http-messages.constants";
 
 export class AuthService {
 
@@ -15,7 +18,7 @@ export class AuthService {
     const isPasswordValid = encrypt.comparepassword(user.password, password);
 
     if (!isPasswordValid) {
-      return null;
+      return null
     }
 
     const token = encrypt.generateToken({ id: user.id });
@@ -27,16 +30,16 @@ export class AuthService {
     const user = await this.userRepository.findOne({ where: { email } });
     const isPasswordValid = encrypt.comparepassword(user.password, password);
 
-    if(!isPasswordValid){
+    if (!isPasswordValid) {
       return null;
     }
 
     user.password = await encrypt.encryptpass(newPassword);
     await this.userRepository.save(user);
-     
+
   }
 
-   async getProfile(userId: string): Promise<User | null> {
+  async getProfile(userId: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });

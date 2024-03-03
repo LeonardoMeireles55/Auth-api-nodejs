@@ -1,5 +1,5 @@
 import { User } from "../entity/User.entity";
-import { encrypt } from "../infra/config/security/security.config";
+import { encrypt } from "../infra/config/security.config";
 import * as cache from "memory-cache";
 import { plainToClass } from "class-transformer";
 import UserDTO from "../dto/user.dto";

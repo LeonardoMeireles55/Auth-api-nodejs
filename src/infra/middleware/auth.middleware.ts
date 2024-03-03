@@ -24,7 +24,7 @@ export const authentification = (
   next();
 };
 
-import { AppDataSource } from "../config/database/data-source";
+import { AppDataSource } from "../../data-source";
 import { User } from "../../entity/User.entity";
 
 

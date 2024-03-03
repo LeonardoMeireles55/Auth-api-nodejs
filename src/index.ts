@@ -1,4 +1,4 @@
-import { AppDataSource } from "./infra/config/database/data-source";
+import { AppDataSource } from "./data-source";
 import * as express from "express";
 import * as dotenv from "dotenv";
 import { Request, Response } from "express";

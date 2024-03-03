@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { User } from "../entity/User.entity";
-import { AppDataSource } from "../infra/config/database/data-source";
+import { AppDataSource } from "../data-source";
 import { IUserRepository } from "./Iuser.repository";
 import UserDTO from "../dto/user.dto";
 

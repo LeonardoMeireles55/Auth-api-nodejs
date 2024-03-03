@@ -3,6 +3,8 @@ import { AuthService } from "../services/auth.service";
 import loginDTO from "../dto/login.dto";
 import { plainToClass } from "class-transformer";
 import { UserRepository } from "../repositories/user.repository";
+import { HTTPStatusCode } from "../constants/enums/http-status-code.enum";
+import { HTTPMessages } from "../constants/http-messages.constants";
 
 export class AuthController {
 
@@ -20,7 +22,7 @@ export class AuthController {
       const token = await this.authService.login(requestDTO.email, requestDTO.password);
 
       if (!token) {
-        return res.status(404).json({ message: "Invalid credentials" });
+        return res.status(HTTPStatusCode.Unauthorized).json(HTTPMessages.UNAUTHORIZED).send();
       }
       
       return res.status(200).json({ token });
