@@ -7,7 +7,7 @@ import { validate } from "class-validator";
 import UserDTO from "../dto/user.dto";
 import { plainToClass } from "class-transformer";
 import { UserRepository } from "../repositories/user.repository";
-import emailDTO from "../dto/email.dto";
+import createEmailDTO from "../dto/email.dto";
 
 export class UserController {
   private userService: UserService;
@@ -42,7 +42,7 @@ export class UserController {
 
   async sendEmail(req: Request, res: Response) {
     try {
-      const emailToSend = plainToClass(emailDTO, req.body);
+      const emailToSend = plainToClass(createEmailDTO, req.body);
 
       await this.userService.sendEmail(emailToSend.to, emailToSend.subject, emailToSend.body)
       return res.status(200).json().send()
@@ -61,7 +61,6 @@ export class UserController {
       if(errors.length > 0) {
         return res.status(HTTPStatusCode.BadRequest).json(errors.map((error => error.property + " is invalid"))).send();
       }
-      
       
       if (await this.userService.existsUserByEmail(userDTO.email)) {
         return res.status(HTTPStatusCode.Conflict).json(HTTPMessages.CONFLICT + ErrorMessages.DuplicateEntryFail).send();

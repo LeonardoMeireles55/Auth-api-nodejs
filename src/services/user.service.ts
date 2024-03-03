@@ -22,7 +22,7 @@ export class UserService {
         if (!user) {
             throw new Error("User not found");
         }
-
+        
         const token = Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
 
