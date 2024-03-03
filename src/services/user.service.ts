@@ -1,7 +1,6 @@
 import { User } from "../entity/User.entity";
 import { encrypt } from "../infra/config/security/security.config";
 import * as cache from "memory-cache";
-import userDTO from "../dto/user.dto";
 import { plainToClass } from "class-transformer";
 import UserDTO from "../dto/user.dto";
 import { Repository } from "typeorm";
@@ -24,7 +23,8 @@ export class UserService {
             throw new Error("User not found");
         }
 
-        const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        const token = Math.random().toString(36).substring(2, 15) +
+        Math.random().toString(36).substring(2, 15);
 
         this.TokenHashMap.set(user.id, token);
 
@@ -55,7 +55,7 @@ export class UserService {
         await this.EmailService.sendEmail(to, subject, body);
     }
 
-    mapUserToDTO(user: User): userDTO {
+    mapUserToDTO(user: User): UserDTO {
         const userDTO = plainToClass(UserDTO, user);
         return userDTO;
     }
@@ -68,7 +68,7 @@ export class UserService {
         return await this.userRepository.exists({ where: { id } })
     }
 
-    async createUser(userDTO: userDTO): Promise<UserDTO> {
+    async createUser(userDTO: UserDTO): Promise<UserDTO> {
 
         const encryptedPassword = await encrypt.encryptpass(userDTO.password);
         userDTO.password = encryptedPassword;
@@ -76,7 +76,7 @@ export class UserService {
         return await this.userRepository.save(userDTO);
     }
 
-    async getUsersFromCacheOrDb(): Promise<userDTO[]> {
+    async getUsersFromCacheOrDb(): Promise<UserDTO[]> {
         const data = cache.get("data");
 
         if (data) {
