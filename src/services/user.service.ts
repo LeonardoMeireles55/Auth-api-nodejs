@@ -6,7 +6,6 @@ import { plainToClass } from "class-transformer";
 import UserDTO from "../dto/user.dto";
 import { Repository } from "typeorm";
 import { EmailService } from "./email.service";
-import { UUID } from "typeorm/driver/mongodb/bson.typings";
 
 export class UserService {
 
