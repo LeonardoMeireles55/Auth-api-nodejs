@@ -1,6 +1,7 @@
-import { HTTPStatusCode } from '../../constants/enums/http-status-code.enum';
+import { HTTPStatusCode } from '../../constants/http-status-code.enum';
 import { HTTPMessages } from '../../constants/http-messages.constants';
 import createHttpError = require('http-errors');
+import { response } from 'express';
 
 export class BadRequestException {
   constructor(message = HTTPMessages.BAD_REQUEST) {
@@ -10,7 +11,7 @@ export class BadRequestException {
 
 export class UnauthorizedException {
   constructor(message = HTTPMessages.UNAUTHORIZED) {
-    throw createHttpError(HTTPStatusCode.Unauthorized, message);
+    return response.json(createHttpError(HTTPStatusCode.Unauthorized, message)) 
   }
 }
 

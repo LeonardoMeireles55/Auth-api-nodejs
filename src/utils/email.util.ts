@@ -6,7 +6,7 @@ dotenv.config();
 const { EMAIL_USER, EMAIL_PASS } =
   process.env;
 
-export class EmailSender {
+export default class EmailSender {
 
     public transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",

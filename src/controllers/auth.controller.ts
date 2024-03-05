@@ -1,17 +1,14 @@
 import { Request, Response } from "express";
-import { AuthService } from "../services/auth.service";
 import loginDTO from "../dto/login.dto";
 import { plainToClass } from "class-transformer";
-import { UserRepository } from "../repositories/user.repository";
-import { HTTPStatusCode } from "../constants/enums/http-status-code.enum";
+import { HTTPStatusCode } from "../constants/http-status-code.enum";
 import { HTTPMessages } from "../constants/http-messages.constants";
+import IAuthService from "../services/Iauth.service";
 
 export class AuthController {
 
-  private authService: AuthService;
-
-  constructor(userRepository: UserRepository) {
-    this.authService = new AuthService(userRepository.getUserRepository());
+  constructor(private authService : IAuthService) {
+    this.authService = authService;
   }
 
   async login(req: Request, res: Response) {

@@ -1,13 +1,10 @@
-import { Repository } from "typeorm";
 import { User } from "../entity/User.entity";
 import { encrypt } from "../infra/config/security.config";
-import { HTTPStatusCode } from "../constants/enums/http-status-code.enum";
-import { response } from "express";
-import { HTTPMessages } from "../constants/http-messages.constants";
+import { IUserRepository } from "../repositories/Iuser.repository";
 
 export class AuthService {
 
-  constructor(private userRepository: Repository<User>) {
+  constructor(private userRepository: IUserRepository) {
     this.userRepository = userRepository;
   }
 

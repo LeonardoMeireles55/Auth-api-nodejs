@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ErrorMessages } from '../../constants/enums/error-messages.enum';
+import { ErrorMessages } from '../../constants/error-messages.enum';
 import { IHTTPError } from '../exception/errors.extension';
 
 export const exceptionHandler = (

@@ -1,24 +1,17 @@
 import { Request, Response } from "express";
-import { UserService } from "../services/user.service";
-import { HTTPStatusCode } from "../constants/enums/http-status-code.enum";
-import { ErrorMessages } from "../constants/enums/error-messages.enum";
+import { HTTPStatusCode } from "../constants/http-status-code.enum";
+import { ErrorMessages } from "../constants/error-messages.enum";
 import { HTTPMessages } from "../constants/http-messages.constants";
 import { validate } from "class-validator";
 import UserDTO from "../dto/user.dto";
 import { plainToClass } from "class-transformer";
-import { UserRepository } from "../repositories/user.repository";
 import createEmailDTO from "../dto/email.dto";
-import { EmailSender } from "../utils/email.util";
-import tokenCache from "../utils/tokenCache.utils";
+import IUserService from "../services/Iuser.service";
 
 export class UserController {
-  private userService: UserService;
-  private emailSender: EmailSender;
-  private tokenCache = tokenCache();
 
-  constructor(userRepository: UserRepository) {
-    this.userService = new UserService(userRepository.getUserRepository(),
-     this.emailSender = new EmailSender(), this.tokenCache);
+  constructor(private userService: IUserService) {
+    this.userService = userService
   }
 
   async generateRecoveryToken(req: Request, res: Response) {
@@ -29,7 +22,7 @@ export class UserController {
       return res.status(200).json({ message }).send();
 
     } catch (error) {
-      return res.status(500).json( error.message );
+      return res.status(500).json(error.message);
     }
   }
 
@@ -37,11 +30,11 @@ export class UserController {
     try {
       const { email, password, token } = req.body;
 
-      await this.userService.updatePassword (email, password, token);
+      await this.userService.updatePassword(email, password, token);
       return res.status(200).json({ message: "Password updated successfully" }).send();
 
     } catch (error) {
-      return res.status(500).json( error.message );
+      return res.status(500).json(error.message);
     }
   }
 
@@ -50,7 +43,7 @@ export class UserController {
       const emailToSend = plainToClass(createEmailDTO, req.body);
       const errors = await validate(emailToSend);
 
-      if(errors.length > 0) {
+      if (errors.length > 0) {
         return res.status(HTTPStatusCode.BadRequest).json(errors.map((error => error.property + ": is invalid"))).send();
       }
 
@@ -68,10 +61,10 @@ export class UserController {
       const userDTO = plainToClass(UserDTO, req.body);
       const errors = await validate(userDTO);
 
-      if(errors.length > 0) {
+      if (errors.length > 0) {
         return res.status(HTTPStatusCode.BadRequest).json(errors.map((error => error.property + " is invalid"))).send();
       }
-      
+
       if (await this.userService.existsUserByEmail(userDTO.email)) {
         return res.status(HTTPStatusCode.Conflict).json(HTTPMessages.CONFLICT + ErrorMessages.DuplicateEntryFail).send();
       }
@@ -80,7 +73,7 @@ export class UserController {
       return res.status(201).json({ message: "User created successfully" }).send();
 
     } catch (error) {
-      return res.status(500).json( error.message ).send();
+      return res.status(500).json(error.message).send();
     }
   }
 
@@ -96,7 +89,7 @@ export class UserController {
       return res.status(200).json({ data });
 
     } catch (error) {
-      return res.status(500).json( error.message );
+      return res.status(500).json(error.message);
     }
   }
 
@@ -113,7 +106,7 @@ export class UserController {
       return res.status(200).json({ message: "Update successful", user: updatedUser });
 
     } catch (error) {
-      return res.status(500).json( error.message );
+      return res.status(500).json(error.message);
     }
   }
 
@@ -129,7 +122,7 @@ export class UserController {
       return res.status(204).json({ message: "User deleted successfully" });
 
     } catch (error) {
-      return res.status(500).json( error.message );
+      return res.status(500).json(error.message);
     }
   }
 }

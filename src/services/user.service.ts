@@ -3,11 +3,11 @@ import { encrypt } from "../infra/config/security.config";
 import * as cache from "memory-cache";
 import { plainToClass } from "class-transformer";
 import UserDTO from "../dto/user.dto";
-import { Repository } from "typeorm";
+import { IUserRepository } from "../repositories/Iuser.repository";
 
 export class UserService {
 
-    constructor(private userRepository: Repository<any>,
+    constructor(private userRepository: IUserRepository,
         private emailSender: any,
         private tokenCache: any) 
     {
@@ -92,7 +92,7 @@ export class UserService {
         }
     }
 
-    async updateUserById(id: string, name: string, email: string): Promise<User> {
+    async updateUserById(id: string, name: string, email: string): Promise<void> {
         const user = await this.getUserById(id);
 
         user.username = name;
