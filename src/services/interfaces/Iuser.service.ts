@@ -1,10 +1,9 @@
-import UserDTO from "../dto/user.dto";
-import { User } from "../entity/User.entity";
+import UserDTO from "../../dto/user.dto";
+import { User } from "../../entity/User.entity";
 
 export default interface IUserService {
     generateRecoveryToken(email: string): Promise<string>;
     updatePassword(email: string, password: string, token: string): Promise<void>;
-    sendEmail(to: string, subject: string, body: string): Promise<void>;
     existsUserByEmail(email: string): Promise<boolean>;
     mapUserToDTO(user: User): UserDTO;
     createUser(user: UserDTO): Promise<UserDTO>;

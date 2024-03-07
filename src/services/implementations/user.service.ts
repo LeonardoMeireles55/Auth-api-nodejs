@@ -1,19 +1,16 @@
-import { User } from "../entity/User.entity";
-import { encrypt } from "../infra/config/security.config";
+import { User } from "../../entity/User.entity";
+import { encrypt } from "../../infra/config/security.config";
 import * as cache from "memory-cache";
 import { plainToClass } from "class-transformer";
-import UserDTO from "../dto/user.dto";
-import { IUserRepository } from "../repositories/Iuser.repository";
+import UserDTO from "../../dto/user.dto";
+import { IUserRepository } from "../../repositories/Iuser.repository";
+import IUserService from "../interfaces/Iuser.service";
 
-export class UserService {
+export class UserService implements IUserService {
 
     constructor(private userRepository: IUserRepository,
-        private emailSender: any,
-        private tokenCache: any) 
-    {
+        private tokenCache: any) {
         this.userRepository = userRepository;
-        this.emailSender = emailSender;
-        this.tokenCache = tokenCache;
     }
 
     async generateRecoveryToken(email: string): Promise<string> {
@@ -28,9 +25,7 @@ export class UserService {
 
         this.tokenCache.set(user.id, token);
 
-        await this.sendEmail(user.email, "Password Recovery", `Your recovery token is: ${token}`);
-
-        return "Verify your email to recover your password.";
+        return token;
     }
 
     async updatePassword(email: string, password: string, token: string): Promise<void> {
@@ -49,10 +44,6 @@ export class UserService {
         user.password = encryptedPassword;
 
         await this.userRepository.save(user);
-    }
-
-    async sendEmail(to: string, subject: string, body: string) {
-        await this.emailSender.sendEmail(to, subject, body);
     }
 
     mapUserToDTO(user: User): UserDTO {

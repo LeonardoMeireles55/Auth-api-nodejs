@@ -1,4 +1,4 @@
-import { User } from "../entity/User.entity";
+import { User } from "../../entity/User.entity";
 
 export default interface IAuthService {
     login(email: string, password: string): Promise<string | null>;

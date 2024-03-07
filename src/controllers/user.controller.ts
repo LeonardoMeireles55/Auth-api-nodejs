@@ -6,20 +6,26 @@ import { validate } from "class-validator";
 import UserDTO from "../dto/user.dto";
 import { plainToClass } from "class-transformer";
 import createEmailDTO from "../dto/email.dto";
-import IUserService from "../services/Iuser.service";
+import IUserService from "../services/interfaces/Iuser.service";
+import IEmailService from "../services/interfaces/Iemail.service";
 
 export class UserController {
 
-  constructor(private userService: IUserService) {
+  constructor(private userService: IUserService, private emailService: IEmailService) {
     this.userService = userService
+    this.emailService = emailService;
   }
 
   async generateRecoveryToken(req: Request, res: Response) {
     try {
       const { email } = req.body;
 
-      const message = await this.userService.generateRecoveryToken(email);
-      return res.status(200).json({ message }).send();
+      const token = await this.userService.generateRecoveryToken(email);
+
+      await this.emailService.sendEmail(email, "Password recovery", `Your token is: ${token}`);
+
+
+      return res.status(200).json(`Verify your email: ${email}`).send();
 
     } catch (error) {
       return res.status(500).json(error.message);
@@ -47,7 +53,7 @@ export class UserController {
         return res.status(HTTPStatusCode.BadRequest).json(errors.map((error => error.property + ": is invalid"))).send();
       }
 
-      await this.userService.sendEmail(emailToSend.to, emailToSend.subject, emailToSend.body)
+      await this.emailService.sendEmail(emailToSend.to, emailToSend.subject, emailToSend.body)
       return res.status(200).json().send()
     }
     catch {

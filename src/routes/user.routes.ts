@@ -5,20 +5,20 @@ import { authorization } from "../infra/middleware/auth.middleware";
 import { AuthController } from "../controllers/auth.controller";
 import { UserRepository } from "../repositories/user.repository";
 import tokenCache from "../utils/tokenCache.utils";
-import EmailSender from "../utils/email.util";
-import { UserService } from "../services/user.service";
-import { AuthService } from "../services/auth.service";
+import EmailService from "../services/implementations/email.service";
+import { UserService } from "../services/implementations/user.service";
+import { AuthService } from "../services/implementations/auth.service";
 
 const Router = express.Router();
 
-const emailSender = new EmailSender();
+const emailService = new EmailService();
 
 const userRepository = new UserRepository();
 
-const userService = new UserService(userRepository, emailSender, tokenCache);
+const userService = new UserService(userRepository, tokenCache);
 const authService = new AuthService(userRepository);
 
-const userController = new UserController(userService);
+const userController = new UserController(userService, emailService);
 
 const authController = new AuthController(authService);
 

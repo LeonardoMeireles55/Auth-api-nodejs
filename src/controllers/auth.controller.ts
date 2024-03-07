@@ -3,7 +3,7 @@ import loginDTO from "../dto/login.dto";
 import { plainToClass } from "class-transformer";
 import { HTTPStatusCode } from "../constants/http-status-code.enum";
 import { HTTPMessages } from "../constants/http-messages.constants";
-import IAuthService from "../services/Iauth.service";
+import IAuthService from "../services/interfaces/Iauth.service";
 
 export class AuthController {
 

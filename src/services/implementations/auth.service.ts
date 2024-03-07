@@ -1,8 +1,9 @@
-import { User } from "../entity/User.entity";
-import { encrypt } from "../infra/config/security.config";
-import { IUserRepository } from "../repositories/Iuser.repository";
+import { User } from "../../entity/User.entity";
+import { encrypt } from "../../infra/config/security.config";
+import { IUserRepository } from "../../repositories/Iuser.repository";
+import IAuthService from "../interfaces/Iauth.service";
 
-export class AuthService {
+export class AuthService implements IAuthService {
 
   constructor(private userRepository: IUserRepository) {
     this.userRepository = userRepository;

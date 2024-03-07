@@ -1,12 +1,13 @@
 import * as nodemailer from 'nodemailer';
 import * as dotenv from "dotenv";
+import IEmailService from '../interfaces/Iemail.service';
 
 dotenv.config();
 
 const { EMAIL_USER, EMAIL_PASS } =
   process.env;
 
-export default class EmailSender {
+export default class EmailSender implements IEmailService {
 
     public transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
