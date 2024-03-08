@@ -9,6 +9,7 @@ export default interface IUserService {
     createUser(user: UserDTO): Promise<UserDTO>;
     existsUserById(id: string): Promise<boolean>;
     getUsersFromCacheOrDb(): Promise<UserDTO[]>;
+    getUserByEmail(email: string): Promise<any>;
     updateUserById(id: string, name:string, email: string): Promise<void>;
     deleteUserById(id: string): Promise<void>;
 }

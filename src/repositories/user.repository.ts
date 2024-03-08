@@ -11,6 +11,9 @@ export class UserRepository implements IUserRepository {
     constructor() {
         this.userRepository = AppDataSource.getRepository(User);
     }
+    getUserByEmail(email: string): Promise<any> {
+        return this.userRepository.findOne({ where: { email } });
+    }
     
     find(): Promise<any[]> {
         return this.userRepository.find();
