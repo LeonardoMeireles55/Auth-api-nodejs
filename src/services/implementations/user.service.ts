@@ -14,7 +14,7 @@ export class UserService implements IUserService {
     }
 
     async generateRecoveryToken(email: string): Promise<string> {
-        const user = await this.userRepository.findOne({ where: { email } });
+        const user = await this.userRepository.getUserByEmail(email);
 
         if (!user) {
             throw new Error("User not found");
@@ -99,5 +99,9 @@ export class UserService implements IUserService {
 
     async getUserById(id: string): Promise<User | undefined> {
         return await this.userRepository.findOne({ where: { id } });
+    }
+
+    async getUserByEmail(email: string): Promise<User | undefined> {
+        return await this.userRepository.findOne({ where: { email } });
     }
 }

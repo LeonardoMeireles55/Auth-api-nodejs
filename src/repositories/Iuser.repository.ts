@@ -5,4 +5,5 @@ export interface IUserRepository {
     remove(user: any): void
     findOne(where: any): Promise<any>
     update(user: any): Promise<any>
+    getUserByEmail(email: string): Promise<any>
   }
