@@ -1,4 +1,5 @@
 import * as express from "express";
+
 import { authentification } from "../infra/middleware/auth.middleware";
 import { UserController } from "../controllers/user.controller";
 import { authorization } from "../infra/middleware/auth.middleware";
