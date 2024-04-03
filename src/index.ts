@@ -8,7 +8,7 @@ import { exceptionHandler } from "./infra/middleware/error.middleware";
 dotenv.config();
 
 const app = express();
-const { PORT = 3000 } = process.env;
+const PORT = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -6,26 +6,28 @@ import { HTTPMessages } from "../constants/http-messages.constants";
 import IAuthService from "../services/interfaces/Iauth.service";
 
 export class AuthController {
-
-  constructor(private authService : IAuthService) {
+  constructor(private authService: IAuthService) {
     this.authService = authService;
   }
 
   async login(req: Request, res: Response) {
     try {
-
       const requestDTO = plainToClass(loginDTO, req.body);
-
-      const token = await this.authService.login(requestDTO.email, requestDTO.password);
+      const token = await this.authService.login(
+        requestDTO.email,
+        requestDTO.password
+      );
 
       if (!token) {
-        return res.status(HTTPStatusCode.Unauthorized).json(HTTPMessages.UNAUTHORIZED).send();
+        return res
+          .status(HTTPStatusCode.Unauthorized)
+          .json(HTTPMessages.UNAUTHORIZED)
+          .send();
       }
-      
-      return res.status(200).json({ token });
 
+      return res.status(200).json({ token });
     } catch (error) {
-      return res.status(500).json( error.message );
+      return res.status(500).json(error.message);
     }
   }
 
@@ -43,9 +45,8 @@ export class AuthController {
       }
 
       return res.status(200).json(user);
-      
     } catch (error) {
-      return res.status(500).json( error.message );
+      return res.status(500).json(error.message);
     }
   }
 }

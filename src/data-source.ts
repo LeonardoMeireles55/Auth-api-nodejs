@@ -12,7 +12,7 @@ const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, NODE_ENV } =
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: DB_HOST,
-  port: parseInt(DB_PORT || "5432" || "5433"),
+  port: parseInt(DB_PORT),
   username: DB_USERNAME || "postgres",
   password: DB_PASSWORD || "root",
   database: DB_DATABASE || "type_orm_api",
@@ -20,7 +20,7 @@ export const AppDataSource = new DataSource({
   synchronize: NODE_ENV === "dev" ? true : false,
   logging: NODE_ENV === "dev" ? true : false,
   entities: [User],
-  migrationsTableName: 'history',
+  migrationsTableName: "history",
   migrations: ["./src/migrations/*{.ts,.js}"],
   subscribers: [],
 });
