@@ -12,7 +12,7 @@ const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, NODE_ENV } =
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: DB_HOST,
-  port: parseInt(DB_PORT),
+  port: parseInt(DB_PORT || "5432"),
   username: DB_USERNAME || "postgres",
   password: DB_PASSWORD || "root",
   database: DB_DATABASE || "type_orm_api",

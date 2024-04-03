@@ -27,21 +27,22 @@ yarn install
 Create a .env file in the project root directory with the following template:
 
 ### Database Configuration
-DB_HOST=  
-DB_PORT=  
-DB_USERNAME=
-DB_PASSWORD=
-DB_DATABASE=
+- DB_HOST=db  
+- DB_PORT=5432
+- DB_USERNAME=postgres
+- DB_PASSWORD=root
+- DB_DATABASE=type_orm_api
 
 ### Email Configuration
-EMAIL_USER=  
-EMAIL_PASS=  
+- EMAIL_USER=  
+- EMAIL_PASS=  
 
 ### Node Environment
-NODE_ENV=dev
+- NODE_ENV=dev
+- PORT=3000
 
 ### JWT Secret
-JWT_SECRET=
+- JWT_SECRET=secret
 
 # Database Settings
 Navigate to the data-source.ts file and configure your database settings.
